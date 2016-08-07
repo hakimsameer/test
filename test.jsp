@@ -6,7 +6,9 @@
 <script lang="Javascript">
 $(document).ready(function() {
 		$('input[type="file"]').jqfileupload({
-			'valid_extns' : ['png'],
+			'valid_extns' : ['jpeg','jpg','png'],
+			'size_limit' : 1000000,
+			'action' : 'UploadFile',
 			'onStart' : function() {
 				$('#upload').show();
 				$('#message').hide();
@@ -21,16 +23,27 @@ $(document).ready(function() {
 				$('#upload').hide();
 				$('#message').show();
 				
+				//var statusVal = JSON.stringify(response.status);
+				//var jsonResponse = JSON.parse(response);
 				var statusVal = JSON.stringify(response.status);
-
+				console.log('statusVal' + statusVal);
 				if(statusVal == "false")
 				{
 					$("#message").html("<font color='red'>"+ JSON.stringify(response.message) +" </font>");
 				}	
-				if(statusVal == "true")
+				//if(statusVal === new String("true"))
+				if(statusVal =="true")
 				{
-					$("#message").html("<font color='green'>"+ JSON.stringify(response.message) +" </font>");
+					console.log('m inn');
+					$("#message").html("<font color='green'>"+JSON.stringify(response.message) +" </font>");
 				}			
+			},
+			'onSizeLimitExceeds' : function(response)
+			{
+				$('#upload').hide();
+				$('#message').show();
+				var statusVal = JSON.stringify(response.status);
+				$("#message").html("<font color='red'>"+ JSON.stringify(response.message) +" </font>");
 			}
 		});
 	});

@@ -2,6 +2,7 @@ package com.fileupload;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -15,7 +16,7 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 public class UploadFile extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+	
 	private final String UPLOAD_DIRECTORY = "/tmp";
 
 	protected void doPost(HttpServletRequest request,
@@ -39,10 +40,14 @@ public class UploadFile extends HttpServlet {
 					item.write(new File(UPLOAD_DIRECTORY + File.separator + name));
 				}
 			}
+			PrintWriter out = response.getWriter();
+			out.println("[{\"status\": true, \"message\": \"File uploaded successfully!!!\"}]");
 		} 
 		catch (Exception e) 
 		{
-		  e.printStackTrace();
+		 // e.printStackTrace();
+			PrintWriter out = response.getWriter();
+			out.println("[{\"status\": false, \"message\": \"Error occured \"}]");
 		}
 	}
 }
